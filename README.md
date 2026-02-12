@@ -8,9 +8,6 @@ Dentre os pacotes **NuGet** utilizados, o **AutoMapper** é o responsável pelo 
 
 ![hero-image]
 
-![Static Badge](https://img.shields.io/badge/Matheus-green?style=for-the-badge)
-
-
 ### Features
 
 - **Domain-Driven Design (DDD)**: Estrutura modular que facilita o entendimento e a manutenção do domínio da aplicação.
@@ -52,10 +49,20 @@ Para obter uma cópia local funcionando, siga estes passos simples.
 
 3. Execute a API e aproveite o seu teste.
 
+## 👨‍💻 Autor
+
+Desenvolvido por **Matheus Damacena**
+
+[LinkedIn][linkedin]
+
+mateusdamacena593@gmail.com
+
+Sinta-se à vontade para entrar em contato para oportunidades, colaborações ou networking na área de desenvolvimento .NET e arquitetura de software.
 
 
 <!-- Links -->
 [dot-net-sdk]: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+[linkedin]: https://www.linkedin.com/in/matheus-damacena-carvalho-19bb74255/
 
 <!-- Images -->
 [hero-image]: images/heroimage.png
