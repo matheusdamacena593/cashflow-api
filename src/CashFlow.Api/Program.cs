@@ -3,12 +3,14 @@ using CashFlow.Api.Filters;
 using CashFlow.Api.Middleware;
 using CashFlow.Application;
 using CashFlow.Infrastructure;
+using CashFlow.Infrastructure.Migrations;
+using System.Threading.Tasks;
 
 namespace CashFlow.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +39,16 @@ namespace CashFlow.Api
 
             app.MapControllers();
 
+            await MigrateDatabase();
+
             app.Run();
+
+            async Task MigrateDatabase()
+            {
+                await using var scope = app.Services.CreateAsyncScope();
+
+                await DatabaseMigration.MigrateDatabase(scope.ServiceProvider);
+            }
         }
     }
 }

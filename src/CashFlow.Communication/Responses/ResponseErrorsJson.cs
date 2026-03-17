@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace CashFlow.Communication.Responses
 {
     public class ResponseErrorsJson
