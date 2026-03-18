@@ -5,7 +5,7 @@ using CashFlow.Infrastructure;
 using CashFlow.Infrastructure.Migrations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace CashFlow.Api
@@ -37,8 +37,14 @@ namespace CashFlow.Api
                         {
                             Reference = new OpenApiReference
                             {
-                            }
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
                         },
+                        new List<string>()
                     }
                 });
             });
