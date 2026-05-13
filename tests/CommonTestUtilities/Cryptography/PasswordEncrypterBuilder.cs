@@ -11,7 +11,7 @@ namespace CommonTestUtilities.Cryptography
         {
             _mock = new Mock<IPasswordEncripter>();
 
-            _mock.Setup(passwordEncrypter => passwordEncrypter.Encrypt(It.IsAny<string>())).Returns("dsadas@342343sdassdca");
+            _mock.Setup(passwordEncrypter => passwordEncrypter.Encrypt(It.IsAny<string>())).Returns("dsadaADS@!!!342343");
         }
 
         public PasswordEncrypterBuilder VerifyPassword(string? password)
