@@ -1,6 +1,8 @@
 using CashFlow.Api.Filters;
 using CashFlow.Api.Middleware;
+using CashFlow.Api.Token;
 using CashFlow.Application;
+using CashFlow.Domain.Security.Tokens;
 using CashFlow.Infrastructure;
 using CashFlow.Infrastructure.Extensions;
 using CashFlow.Infrastructure.Migrations;
@@ -54,6 +56,10 @@ namespace CashFlow.Api
 
             builder.Services.AddInfrastruture(builder.Configuration);
             builder.Services.AddApplication();
+
+            builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
+
+            builder.Services.AddHttpContextAccessor();
 
             var signingKey = builder.Configuration.GetValue<string>("Settings:Jwt:SigningKey");
 
