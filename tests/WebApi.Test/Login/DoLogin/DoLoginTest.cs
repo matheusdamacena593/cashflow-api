@@ -11,18 +11,16 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Login.DoLogin
 {
-    public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
+    public class DoLoginTest : CashFlowClassFixture
     {
         private const string METHOD = "api/Login";
 
-        private readonly HttpClient _httpClient;
         private readonly string _name;
         private readonly string _email;
         private readonly string _password;
 
-        public DoLoginTest(CustomWebApplicationFactory webApplicationFactory)
+        public DoLoginTest(CustomWebApplicationFactory webApplicationFactory) : base(webApplicationFactory)
         {
-            _httpClient = webApplicationFactory.CreateClient();
             _name = webApplicationFactory.GetName();
             _email = webApplicationFactory.GetEmail();
             _password = webApplicationFactory.GetPassword();
@@ -37,7 +35,7 @@ namespace WebApi.Test.Login.DoLogin
                 Password = _password
             };
 
-            var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+            var result = await DoPost(METHOD, request);
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -51,12 +49,11 @@ namespace WebApi.Test.Login.DoLogin
 
         [Theory]
         [ClassData(typeof(CultureInlineDataTest))]
-        public async Task Error_Login_Invalid(string cultureInfo)
+        public async Task Error_Login_Invalid(string culture)
         {
             var request = RequestLoginJsonBuilder.Build();
 
-            _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(cultureInfo));
-            var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+            var result = await DoPost(requestUri: METHOD, request: request, culture: culture);
 
             result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
@@ -66,7 +63,7 @@ namespace WebApi.Test.Login.DoLogin
 
             var errors = response.RootElement.GetProperty("errorMessages").EnumerateArray();
 
-            var expectedMessage = ResourceErrorMessages.ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", new CultureInfo(cultureInfo));
+            var expectedMessage = ResourceErrorMessages.ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", new CultureInfo(culture));
 
             errors.Should().HaveCount(1).And.Contain(error => error.GetString()!.Equals(expectedMessage));
         }

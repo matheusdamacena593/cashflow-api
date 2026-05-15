@@ -13,23 +13,18 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Users.Register
 {
-    public class RegisterUserTest : IClassFixture<CustomWebApplicationFactory>
+    public class RegisterUserTest : CashFlowClassFixture
     {
         private const string METHOD = "api/User";
 
-        private readonly HttpClient _httpClient;
-
-        public RegisterUserTest(CustomWebApplicationFactory webApplicationFactory)
-        {
-            _httpClient = webApplicationFactory.CreateClient();
-        }
+        public RegisterUserTest(CustomWebApplicationFactory webApplicationFactory) : base(webApplicationFactory) { }
 
         [Fact]
         public async Task Success()
         {
             var request = RequestRegisterUserJsonBuilder.Build();
 
-            var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+            var result = await DoPost(METHOD, request);
 
             result.StatusCode.Should().Be(HttpStatusCode.Created);
             
@@ -43,14 +38,12 @@ namespace WebApi.Test.Users.Register
 
         [Theory]
         [ClassData(typeof(CultureInlineDataTest))]
-        public async Task Error_Empty_Name(string cultureInfo)
+        public async Task Error_Empty_Name(string culture)
         {
             var request = RequestRegisterUserJsonBuilder.Build();
             request.Name = string.Empty;
 
-            _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(cultureInfo));
-
-            var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+            var result = await DoPost(requestUri: METHOD, request: request, culture: culture);
 
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -60,7 +53,7 @@ namespace WebApi.Test.Users.Register
 
             var errors = response.RootElement.GetProperty("errorMessages").EnumerateArray();
 
-            var expectedMessage = ResourceErrorMessages.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(cultureInfo));
+            var expectedMessage = ResourceErrorMessages.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(culture));
 
             errors.Should().HaveCount(1).And.Contain(error => error.GetString()!.Equals(expectedMessage));
         }
