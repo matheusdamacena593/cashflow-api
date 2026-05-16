@@ -14,7 +14,7 @@ namespace WebApi.Test
         public CashFlowClassFixture(CustomWebApplicationFactory webApplicationFactory)
         {
             _httpClient = webApplicationFactory.CreateClient();
-            _token = webApplicationFactory.GetToken();
+            _token = webApplicationFactory.User_Team_Member.GetToken();
         }
 
         protected async Task<HttpResponseMessage> DoPost(
@@ -38,6 +38,17 @@ namespace WebApi.Test
             ChangeRequestCulture(culture);
 
             return await _httpClient.GetAsync(requestUri);
+        }
+
+        protected async Task<HttpResponseMessage> DoDelete(
+            string requestUri,
+            string token,
+            string culture = "en")
+        {
+            AuthorizeRequest(token);
+            ChangeRequestCulture(culture);
+
+            return await _httpClient.DeleteAsync(requestUri);
         }
 
         private void AuthorizeRequest(string token)
