@@ -1,4 +1,5 @@
 using CashFlow.Domain.Entities;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace WebApi.Test.Resources
 {
@@ -12,5 +13,7 @@ namespace WebApi.Test.Resources
         }
 
         public long GetExpenseId() => _expense.Id;
+
+        public DateTime GetDate() => _expense.Date;
     }
 }

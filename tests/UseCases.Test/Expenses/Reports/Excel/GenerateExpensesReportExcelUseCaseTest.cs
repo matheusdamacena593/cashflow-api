@@ -1,0 +1,48 @@
+using CashFlow.Application.UseCases.Expenses.Reports.Excel;
+using CashFlow.Domain.Entities;
+using CashFlow.Exception;
+using CashFlow.Exception.ExceptionsBase;
+using CommonTestUtilities.Entities;
+using CommonTestUtilities.LoggedUser;
+using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Requests;
+using FluentAssertions;
+
+namespace UseCases.Test.Expenses.Reports.Excel
+{
+    public class GenerateExpensesReportExcelUseCaseTest
+    {
+        [Fact]
+        public async Task Success()
+        {
+            var loggedUser = UserBuilder.Build();
+            var expenses = ExpenseBuilder.Collection(loggedUser);
+
+            var useCase = CreateUseCase(loggedUser, expenses);
+
+            var result = await useCase.Execute(DateOnly.FromDateTime(DateTime.Today));
+
+            result.Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public async Task Success_Empty()
+        {
+            var loggedUser = UserBuilder.Build();
+
+            var useCase = CreateUseCase(loggedUser, []);
+
+            var result = await useCase.Execute(DateOnly.FromDateTime(DateTime.Today));
+
+            result.Should().BeEmpty();
+        }
+
+        private GenerateExpensesReportExcelUseCase CreateUseCase(User user, List<Expense> expenses)
+        {
+            var repository = new ExpensesReadOnlyRepositoryBuilder().FilterByMonth(user, expenses).Build();
+            var loggerUser = LoggedUserBuilder.Build(user);
+
+            return new GenerateExpensesReportExcelUseCase(repository, loggerUser);
+        }
+    }
+}
