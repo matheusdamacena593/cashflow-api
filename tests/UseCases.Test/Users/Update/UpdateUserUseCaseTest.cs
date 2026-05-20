@@ -1,15 +1,11 @@
-using CashFlow.Application.UseCases.Users.Register;
 using CashFlow.Application.UseCases.Users.Update;
 using CashFlow.Domain.Entities;
 using CashFlow.Exception;
 using CashFlow.Exception.ExceptionsBase;
-using CommonTestUtilities.Cryptography;
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.LoggedUser;
-using CommonTestUtilities.Mapper;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
-using CommonTestUtilities.Token;
 using FluentAssertions;
 
 namespace UseCases.Test.Users.Update
