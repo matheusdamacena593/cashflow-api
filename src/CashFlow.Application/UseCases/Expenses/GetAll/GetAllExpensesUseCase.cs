@@ -2,7 +2,6 @@ using AutoMapper;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Services.LoggedUser;
-using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CashFlow.Application.UseCases.Expenses.GetAll
 {
